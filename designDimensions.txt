@@ -1,0 +1,15 @@
+Design dimensions:
+
+Browser size:
+	height: 1342
+	width: 955
+
+Big Circle dimension:
+	height: 765 80%
+	width: 1098 81%
+
+Small Circles Dimensions:
+	Radius: 51px
+
+enlarged circle dimension:
+	radius: 118px
