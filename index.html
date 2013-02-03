@@ -5,50 +5,68 @@
 </head>
 
 <body>
-<h1>My first SVG</h1>
-
 <div id="demo">
 	<div id="inactiveCircles"></div>
 </div>
 
 
 <script>
+  // Returns the current size of the browser viewport.
+  function getBrowserDimensions(){
+    var dimensions = [];
 
-  function updateBrowserWidth(){
-      // Get the dimensions of the viewport
-      var browserWidth = window.innerWidth ||
-                  document.documentElement.clientWidth ||
-                  document.body.clientWidth;
+    var browserWidth = window.innerWidth ||
+                      document.documentElement.clientWidth ||
+                      document.body.clientWidth;
 
-      return browserWidth;
+    var browserHeight = window.innerHeight ||
+                        document.documentElement.clientHeight ||
+                        document.body.clientHeight;
 
-  };
-  function updateBrowserHeight(){
-      // Get the dimensions of the viewport
-      var browserHeight = window.innerHeight ||
-                   document.documentElement.clientHeight ||
-                   document.body.clientHeight;
+    dimensions.push({'height': browserHeight, 'width': browserWidth});
 
-      return browserHeight;
+    return dimensions;
+  }
 
-  };
+  // Returns the starting coordinates for the big background circle given the position for which corner the circle should be revolving around. position indicates which corner should be the center from 0:top-left, 1:top-right, 2:bottom-right, and 3:bottom-left.
+  function getStartingCoordinates(position){
+    var coordinates = [];
+
+    switch (position)
+    {
+      case 0: 
+        coordinates.push({'x': 0, 'y': 0});
+      break;
+      case 1: 
+        coordinates.push({'x': browserDimensions[0].width, 'y': 0});
+      break;
+      case 2: 
+        coordinates.push({'x': browserDimensions[0].width, 'y': browserDimensions[0].height});
+      break;
+      case 3: 
+        coordinates.push({'x': 0, 'y': browserDimensions[0].height});
+      break;
+    }
+
+    return coordinates;
+  }
 
 
-  var browserWidth = updateBrowserWidth();
-  var browserHeight = updateBrowserHeight();
-  window.onresize = updateBrowserWidth();     // When the browser changes size
-  window.onresize = updateBrowserHeight();     // When the browser changes size
+var browserDimensions = getBrowserDimensions();
+  window.onresize = getBrowserDimensions();     //Update when the browser changes size
 
-  var pathRadius = browserHeight*.8;
-  var pathInnerRadius = browserHeight*.7;
-  var pathMiddleRadius = browserHeight*.75;
+var startingCoordinates = getStartingCoordinates(1);
 
+  var pathRadius = browserDimensions[0].height*.8;
+  var pathInnerRadius = browserDimensions[0].height*.7;
+  var pathMiddleRadius = browserDimensions[0].height*.75;
 
+  //Returns an array of coordinates along the circumference of the large background circle to be used when drawing the initial (inactive) small circles on the curved path. Function takes numSteps as an input specifying how many points to create on the circle and will output an array or coordinates for the number of steps specified. NOTE: this is the total number of coordinates and only 1/4 of them will be on screen, so multiply the number you need to be shown by 4 when suplying numSteps.
   function pointsOnCircle(numSteps){
     coordinates = [];
     for(var i = 0; i < numSteps; i++) {
-      var x = browserWidth + pathMiddleRadius * Math.cos(2 * Math.PI * i / numSteps);
-      var y = browserHeight + pathMiddleRadius * Math.sin(2 * Math.PI * i / numSteps); 
+      var x = startingCoordinates[0].x + pathMiddleRadius * Math.cos(2 * Math.PI * i / numSteps);
+      var y = startingCoordinates[0].y + pathMiddleRadius * Math.sin(2 * Math.PI * i / numSteps); 
       coordinates.push({
         'x': x,
         'y': y
@@ -57,64 +75,53 @@
     return coordinates;
   }
 
-  var pathCenter;
   var numSteps = 16;
   var circlePoints = pointsOnCircle(numSteps);
   
   console.log(circlePoints);
 
 
-
-  var bubblesDemo = d3.select("#demo").
+//Draw the SVG Canvas to hold objects we will insert
+var bubblesDemo = d3.select("#demo").
   append("svg:svg").
-  attr("width", browserWidth).
-  attr("height", browserHeight);
+  attr("width", browserDimensions[0].width).
+  attr("height", browserDimensions[0].height);
 
+//Draw the big circle along with its outer border
 bubblesDemo.append("svg:circle").
-  attr("cx", browserWidth).
-  attr("cy", browserHeight).
+  attr("cx", startingCoordinates[0].x).
+  attr("cy", startingCoordinates[0].y).
   attr("r", pathRadius).
   attr("stroke", "#eeefec").
   attr("stroke-width", 15).
   attr("fill", "#3e65d6")
 
+//Draw a smaller circle and use its outer border to make the inner border of our curve path
 bubblesDemo.append("svg:circle").
-  attr("cx", browserWidth).
-  attr("cy", browserHeight).
+  attr("cx", startingCoordinates[0].x).
+  attr("cy", startingCoordinates[0].y).
   attr("r", pathInnerRadius).
   attr("stroke", "#eeefec").
   attr("stroke-width", 15).
   attr("fill", "#ffffff")
 
-bubblesDemo.append("svg:circle").
-  attr("cx", 650).
-  attr("cy", 350).
-  attr("r", 118).
-  attr("stroke", "#4068dd").
-  attr("stroke-width", 12).
-  attr("fill", "#ffffff")
+//Draw the expanded (active) circle on the path line we have created
+// bubblesDemo.append("svg:circle").
+//   attr("cx", 650).
+//   attr("cy", 350).
+//   attr("r", 118).
+//   attr("stroke", "#4068dd").
+//   attr("stroke-width", 12).
+//   attr("fill", "#ffffff")
 
-  // bubblesDemo.append("svg:circle").
-  // attr("cx", circlePoints[15].x).
-  // attr("cy", circlePoints[15].y).
-  // attr("r", 40).
-  // attr("fill", "#ffffff")
-
-// var littleCircles = d3.selectAll("#inactiveCircles").data(circlePoints);
-// var enter = littleCircles.enter().append("circle");
-// littleCircles.attr("cx", function(d){return d.x;});
-// littleCircles.attr("cy", function(d){return d.y;});
-// littleCircles.attr("r", 40);
-// littleCircles.style("fill", "red");
-
-
+//Bind data from circlePoints and draw circles on the outer edge of the big circle curve
 bubblesDemo.selectAll("circle")
   .data(circlePoints)
   .enter().append("svg:circle")
     .attr("cx", function(d) { return d.x; })
     .attr("cy", function(d) { return d.y; })
     .attr("r", 40)
-    .style("fill", "red");
+    .style("fill", "#ffffff");
 </script>
 
 
