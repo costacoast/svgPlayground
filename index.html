@@ -1,7 +1,8 @@
 <html>
 <head>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<link rel="stylesheet" media="screen" href="/styles/styles.css">
 </head>
 
 <body>
@@ -55,7 +56,7 @@
 var browserDimensions = getBrowserDimensions();
 var aspectRatio = browserDimensions[0].width / browserDimensions[0].height;
 
-var startingCoordinates = getStartingCoordinates(1);
+var startingCoordinates = getStartingCoordinates(2);
   var pathRadius = browserDimensions[0].height*.8;
   var pathMiddleRadius = browserDimensions[0].height*.75;
   var pathInnerRadius = browserDimensions[0].height*.7;
@@ -75,7 +76,7 @@ var startingCoordinates = getStartingCoordinates(1);
     return coordinates;
   }
 
-  var numSteps = 16;
+  var numSteps = 12;
   var circlePoints = pointsOnCircle(numSteps);
   
   console.log(circlePoints);
@@ -97,7 +98,8 @@ bubblesDemo.append("svg:circle").
   attr("r", pathRadius).
   attr("stroke", "#eeefec").
   attr("stroke-width", 15).
-  attr("fill", "#3e65d6")
+  attr("id", "path").
+  attr("class", "green")
 
 //Draw a smaller circle and use its outer border to make the inner border of our curve path
 bubblesDemo.append("svg:circle").
@@ -118,7 +120,7 @@ bubblesDemo.append("svg:circle").
 //   attr("fill", "#ffffff")
 
 //Bind data from circlePoints and draw circles on the outer edge of the big circle curve
-bubblesDemo.selectAll("circle")
+bubblesDemo.selectAll("#smallCircle")
   .data(circlePoints)
   .enter().append("svg:circle")
     .attr("cx", function(d) { return d.x; })
