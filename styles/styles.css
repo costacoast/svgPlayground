@@ -1,0 +1,33 @@
+/* -------------------------------------------------------------------------- */
+/* Reset -------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+body, div, h1, h2, h3, h4, h5, h6, p, blockquote, pre, dl, dt, dd, ol, ul, li, img, hr, form, fieldset, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0;}
+.invisible, .accessibility {position: absolute; left: -9999em;}
+img, a img {border: none; -ms-interpolation-mode: bicubic;}
+iframe, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+
+
+circle#path{
+    
+}
+
+
+circle#path.red{
+    fill: red;
+}
+
+circle#path.blue{
+    fill: #4068dd;
+}
+
+circle#path.green{
+    fill: #51c826;
+}
+
+circle#path.yellow{
+    fill: #f2c224;
+}
+
+circle#path.black{
+    fill: #636363;
+}
