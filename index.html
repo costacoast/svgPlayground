@@ -31,24 +31,10 @@
   }
 
   // Returns the starting coordinates for the big background circle given the position for which corner the circle should be revolving around. position indicates which corner should be the center from 0:top-left, 1:top-right, 2:bottom-right, and 3:bottom-left.
-  function getStartingCoordinates(position){
+  function getStartingCoordinates(){
     var coordinates = [];
-
-    switch (position)
-    {
-      case 0: 
-        coordinates.push({'x': 0, 'y': 0});
-      break;
-      case 1: 
-        coordinates.push({'x': browserDimensions[0].width, 'y': 0});
-      break;
-      case 2: 
-        coordinates.push({'x': browserDimensions[0].width, 'y': browserDimensions[0].height});
-      break;
-      case 3: 
-        coordinates.push({'x': 0, 'y': browserDimensions[0].height});
-      break;
-    }
+    
+        coordinates.push({'x': browserDimensions[0].width-(browserDimensions[0].width*.1), 'y': browserDimensions[0].height*1.4});
 
     return coordinates;
   }
@@ -57,10 +43,10 @@
 var browserDimensions = getBrowserDimensions();
 var aspectRatio = browserDimensions[0].width / browserDimensions[0].height;
 
-var startingCoordinates = getStartingCoordinates(2);
-  var pathRadius = browserDimensions[0].height*.8;
-  var pathMiddleRadius = browserDimensions[0].height*.75;
-  var pathInnerRadius = browserDimensions[0].height*.7;
+var startingCoordinates = getStartingCoordinates();
+  var pathRadius = browserDimensions[0].width*.8;
+  var pathMiddleRadius = browserDimensions[0].width*.75;
+  var pathInnerRadius = browserDimensions[0].width*.7;
 
 
   //Returns an array of coordinates along the circumference of the large background circle to be used when drawing the initial (inactive) small circles on the curved path. Function takes numSteps as an input specifying how many points to create on the circle and will output an array or coordinates for the number of steps specified. NOTE: this is the total number of coordinates and only 1/4 of them will be on screen, so multiply the number you need to be shown by 4 when suplying numSteps.
