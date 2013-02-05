@@ -31,7 +31,7 @@
   }
 
   // Returns the starting coordinates for the big background circle given the position for which corner the circle should be revolving around. position indicates which corner should be the center from 0:top-left, 1:top-right, 2:bottom-right, and 3:bottom-left.
-  function getStartingCoordinates(){
+  function getStartingCoordinates(browserDimensions){
     var coordinates = [];
     
         coordinates.push({'x': browserDimensions[0].width-(browserDimensions[0].width*.1), 'y': browserDimensions[0].height*1.4});
@@ -40,17 +40,11 @@
   }
 
 
-var browserDimensions = getBrowserDimensions();
-var aspectRatio = browserDimensions[0].width / browserDimensions[0].height;
 
-var startingCoordinates = getStartingCoordinates();
-  var pathRadius = browserDimensions[0].width*.8;
-  var pathMiddleRadius = browserDimensions[0].width*.75;
-  var pathInnerRadius = browserDimensions[0].width*.7;
 
 
   //Returns an array of coordinates along the circumference of the large background circle to be used when drawing the initial (inactive) small circles on the curved path. Function takes numSteps as an input specifying how many points to create on the circle and will output an array or coordinates for the number of steps specified. NOTE: this is the total number of coordinates and only 1/4 of them will be on screen, so multiply the number you need to be shown by 4 when suplying numSteps.
-  function pointsOnCircle(numSteps){
+  function pointsOnCircle(startingCoordinates, numSteps, pathMiddleRadius){
     coordinates = [];
     for(var i = 0; i < numSteps; i++) {
       var x = startingCoordinates[0].x + pathMiddleRadius * Math.cos(2 * Math.PI * i / numSteps);
@@ -63,11 +57,21 @@ var startingCoordinates = getStartingCoordinates();
     return coordinates;
   }
 
-  var numSteps = 12;
-  var circlePoints = pointsOnCircle(numSteps);
   
-  console.log(circlePoints);
 
+function drawCircles(){
+    
+
+  var browserDimensions = getBrowserDimensions();
+  var aspectRatio = browserDimensions[0].width / browserDimensions[0].height;
+
+  var startingCoordinates = getStartingCoordinates(browserDimensions);
+  var pathRadius = browserDimensions[0].width*.8;
+  var pathMiddleRadius = browserDimensions[0].width*.75;
+  var pathInnerRadius = browserDimensions[0].width*.7;
+  
+  var numSteps = 12;
+  var circlePoints = pointsOnCircle(startingCoordinates, numSteps, pathMiddleRadius);
 
 //Draw the SVG Canvas to hold objects we will insert
 var bubblesDemo = d3.select("#demo").
@@ -115,14 +119,12 @@ bubblesDemo.selectAll("#smallCircle")
     .attr("r", 40)
     .style("fill", "#ffffff");
 
+}
 
+//Draw the circles for the first time the page is loaded.
+drawCircles();
 //Code below allows the SVG canvas area to respond to updated browser dimensions when the screen changes sizes.
-var canvas = $("#svgCanvas");
-$(window).on("resize", function(){
-  var targetWidth = canvas.parent().width();
-  canvas.attr("width", targetWidth);
-  canvas.attr("height", Math.round(targetWidth / aspectRatio));
-});
+//$(window).on("resize", drawCircles());
 
 
 </script>
