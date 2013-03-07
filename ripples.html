@@ -28,24 +28,29 @@ var w = 500,
 var svg = d3.select("body").append("svg:svg")
     .attr("width", w)
     .attr("height", h)
-    .style("pointer-events", "all")
-    .on("click", particle);
+    .style("pointer-events", "all");
+    
+var last = 0;
+var t = .5;
+d3.timer(function(elapsed) {
+  particle();
+});
 
 function particle() {
-  var m = d3.svg.mouse(this);
-
   svg.append("svg:circle")
-      .attr("cx", m[0])
-      .attr("cy", m[1])
+      .attr("cx", Math.floor((Math.random()*500)+1))
+      .attr("cy", Math.floor((Math.random()*375)+1))
       .attr("r", 1e-6)
       .style("stroke", "#7D939E")
       .style("stroke-opacity", 1)
     .transition()
-      .duration(2000)
+      .duration(2500)
       .ease(Math.sqrt)
       .attr("r", 100)
       .style("stroke-opacity", 1e-6)
       .remove();
+      
+ 
 }
 
     </script>
