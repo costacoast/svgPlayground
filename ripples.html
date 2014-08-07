@@ -5,54 +5,46 @@
     <title>OMG Particles!</title>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.25.0"></script>
     <style type="text/css">
-
-body {
-    background-image:url('http://farm3.static.flickr.com/2231/2073927361_89c50e8a64.jpg');
-    background-repeat:no-repeat;
-}
-
-circle {
-  fill: none;
-  stroke-width: 1.5px;
-}
-
+        body {
+            background-image:url('http://farm3.static.flickr.com/2231/2073927361_89c50e8a64.jpg');
+            background-repeat:no-repeat;
+        }
+        
+        circle {
+          fill: none;
+          stroke-width: 1.5px;
+        }
     </style>
   </head>
   <body>
     <script type="text/javascript">
+        var w = 500,
+            h = 375,
+            z = d3.scale.category20c();
+        
+        var svg = d3.select("body").append("svg:svg")
+            .attr("width", w)
+            .attr("height", h)
+            .style("pointer-events", "all");
 
-var w = 500,
-    h = 375,
-    z = d3.scale.category20c();
-
-var svg = d3.select("body").append("svg:svg")
-    .attr("width", w)
-    .attr("height", h)
-    .style("pointer-events", "all");
-    
-var last = 0;
-var t = .5;
-d3.timer(function(elapsed) {
-  particle();
-});
-
-function particle() {
-  svg.append("svg:circle")
-      .attr("cx", Math.floor((Math.random()*500)+1))
-      .attr("cy", Math.floor((Math.random()*375)+1))
-      .attr("r", 1e-6)
-      .style("stroke", "#7D939E")
-      .style("stroke-opacity", 1)
-    .transition()
-      .duration(2500)
-      .ease(Math.sqrt)
-      .attr("r", 100)
-      .style("stroke-opacity", 1e-6)
-      .remove();
-      
- 
-}
-
+        d3.timer(function() {
+          particle();
+        });
+        
+        function particle() {
+          svg.append("svg:circle")
+              .attr("cx", Math.floor((Math.random()*500)+1))
+              .attr("cy", Math.floor((Math.random()*375)+1))
+              .attr("r", 1e-6)
+              .style("stroke", "#7D939E")
+              .style("stroke-opacity", 1)
+            .transition()
+              .duration(2500)
+              .ease(Math.sqrt)
+              .attr("r", 100)
+              .style("stroke-opacity", 1e-6)
+              .remove();
+        }
     </script>
   </body>
 </html>

@@ -6,9 +6,20 @@ body, div, h1, h2, h3, h4, h5, h6, p, blockquote, pre, dl, dt, dd, ol, ul, li, i
 img, a img {border: none; -ms-interpolation-mode: bicubic;}
 iframe, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
 
+svg#bubbles{
+background:
+radial-gradient(circle at 0% 50%, rgba(96, 16, 48, 0) 9px, #613 10px, rgba(96, 16, 48, 0) 11px) 0px 10px,
+radial-gradient(at 100% 100%, rgba(96, 16, 48, 0) 9px, #613 10px, rgba(96, 16, 48, 0) 11px),
+#8a3;
+background-size: 20px 20px;; background:
+-webkit-radial-gradient(0% 50%, circle , rgba(96, 16, 48, 0) 9px, #613 10px, rgba(96, 16, 48, 0) 11px) 0px 10px,
+-webkit-radial-gradient(100% 100%,     rgba(96, 16, 48, 0) 9px, #613 10px, rgba(96, 16, 48, 0) 11px),
+#8a3;
+background-size: 20px 20px;
+}
 
 circle#path{
-    
+    fill: red;
 }
 
 
